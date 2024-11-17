@@ -11,14 +11,8 @@ API_ID = '9161657'
 API_HASH = '400dafb52292ea01a8cf1e5c1756a96a'
 PHONE_NUMBER = '+51981119038'
 
-# Configuración del segundo cliente de Telegram
-API_ID_2 = '20451779'
-API_HASH_2 = 'da79d8408831a094d64edb184f253bab'
-PHONE_NUMBER_2 = '+51903356436'
-
 # Inicializar cliente de Telegram
 client = TelegramClient('mi_sesion_token', API_ID, API_HASH)
-client_2 = TelegramClient('mi_sesion_token_2', API_ID_2, API_HASH_2)
 
 # Usuario administrador
 ADMIN_USER = 'Asteriscom'
@@ -309,16 +303,12 @@ async def main():
     while True:
         try:
             await client.start(PHONE_NUMBER)
-            await client_2.start(PHONE_NUMBER_2)
             print("Bot de token conectado y funcionando.")
-            await asyncio.gather(
-                client.run_until_disconnected(),
-                client_2.run_until_disconnected()
-            )
+            await client.run_until_disconnected()
         except Exception as e:
             print(f"Error detectado: {e}. Reintentando en 5 segundos...")
             await asyncio.sleep(5)  # Esperar unos segundos antes de intentar reconectar
 
 # Iniciar el cliente de Telegram
-with client, client_2:
+with client:
     client.loop.run_until_complete(main())
